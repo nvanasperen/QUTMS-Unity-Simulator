@@ -1,0 +1,23 @@
+{
+    "presetName": "QEV-3 Chassis",
+    "chassisModelPrefabPath": "Assets/EUFS/Racecar/prefabs/QEV3_ChassisVisual_Centered.prefab",
+    "chassisColliderBoxPath": "",
+    "chassisMassKg": 235.0,
+    "gravityMps2": 9.8100004196167,
+    "yawInertiaIzzKgM2": 31.270000457763673,
+    "frontWeightFraction": 0.44999998807907107,
+    "chassisWheelbaseM": 1.5800000429153443,
+    "chassisFrontTrackM": 1.399999976158142,
+    "chassisRearTrackM": 1.399999976158142,
+    "dragCoefficient": 1.4447499513626099,
+    "downforceCoefficient": 3.2245500087738039,
+    "minSteeringRad": -0.2800000011920929,
+    "maxSteeringRad": 0.2800000011920929,
+    "steeringLockTimeS": 1.5,
+    "steeringCommandScale": 0.17777778208255769,
+    "steeringPublishScale": 5.625,
+    "maxAccelerationMps2": 5.0,
+    "minAccelerationMps2": -10.0,
+    "maxVelocityMps": 30.0,
+    "minVelocityMps": 0.0
+}

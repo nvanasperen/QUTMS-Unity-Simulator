@@ -1,0 +1,29 @@
+{
+    "presetName": "QUTMS Dry Wheel Package",
+    "frontLeftWheelPath": "Assets/EUFS/Racecar/prefabs/WheelVisual_FL.prefab",
+    "frontRightWheelPath": "Assets/EUFS/Racecar/prefabs/WheelVisual_FR.prefab",
+    "rearLeftWheelPath": "Assets/EUFS/Racecar/prefabs/WheelVisual_RL.prefab",
+    "rearRightWheelPath": "Assets/EUFS/Racecar/prefabs/WheelVisual_RR.prefab",
+    "wheelAssemblyMassKg": 8.0,
+    "radiusM": 0.20319999754428864,
+    "widthM": 0.20000000298023225,
+    "tyreCoefficient": 1.0,
+    "pacejkaB": 12.5600004196167,
+    "pacejkaC": -1.3799999952316285,
+    "pacejkaD": 1.600000023841858,
+    "pacejkaE": -0.5799999833106995,
+    "autoScaleVisualMeshToTyreRadius": true,
+    "visualMeshNativeRadiusM": 0.2524999976158142,
+    "visualMeshScaleMultiplier": 1.0,
+    "scaleModelCentreOffsetWithVisualScale": true,
+    "modelCentreOffsetM": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "modelRotationOffsetDeg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    }
+}

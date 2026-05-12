@@ -1,0 +1,9 @@
+{
+    "presetName": "QEV-3 Baseline Suspension",
+    "suspensionDistanceM": 0.11999999731779099,
+    "springStrengthNPerM": 8400.0,
+    "damperStrengthNsPerM": 1000.0,
+    "targetPosition": 0.6499999761581421,
+    "wheelDampingRate": 1.0,
+    "forceAppPointDistanceM": 0.0
+}

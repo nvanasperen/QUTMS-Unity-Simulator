@@ -1,0 +1,625 @@
+{
+  "name": "qev-3d",
+  "nodes": [
+    {
+      "name": "base_link",
+      "parent": "",
+      "kind": "empty",
+      "mesh": "",
+      "primitive": "",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "chassis",
+      "parent": "base_link",
+      "kind": "empty",
+      "mesh": "",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.2032,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "left_steering_hinge",
+      "parent": "chassis",
+      "kind": "empty",
+      "mesh": "",
+      "primitive": "",
+      "position": [
+        -0.7000000000000001,
+        0.0,
+        0.79
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "left_front_wheel",
+      "parent": "left_steering_hinge",
+      "kind": "empty",
+      "mesh": "",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "right_steering_hinge",
+      "parent": "chassis",
+      "kind": "empty",
+      "mesh": "",
+      "primitive": "",
+      "position": [
+        0.7000000000000001,
+        0.0,
+        0.79
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "right_front_wheel",
+      "parent": "right_steering_hinge",
+      "kind": "empty",
+      "mesh": "",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "virtual_steering_hinge",
+      "parent": "chassis",
+      "kind": "empty",
+      "mesh": "",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.0,
+        0.79
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "virtual_front_wheel",
+      "parent": "virtual_steering_hinge",
+      "kind": "empty",
+      "mesh": "",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "left_rear_wheel",
+      "parent": "chassis",
+      "kind": "empty",
+      "mesh": "",
+      "primitive": "",
+      "position": [
+        -0.7000000000000001,
+        0.0,
+        -0.79
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "right_rear_wheel",
+      "parent": "chassis",
+      "kind": "empty",
+      "mesh": "",
+      "primitive": "",
+      "position": [
+        0.7000000000000001,
+        0.0,
+        -0.79
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "virtual_rear_wheel",
+      "parent": "chassis",
+      "kind": "empty",
+      "mesh": "",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.0,
+        -0.79
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "velodyne_base_link",
+      "parent": "chassis",
+      "kind": "empty",
+      "mesh": "",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.85,
+        -0.3
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "velodyne",
+      "parent": "velodyne_base_link",
+      "kind": "empty",
+      "mesh": "",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.0377,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "chassis_visual_0__CHASSIS_YAW_90",
+      "parent": "chassis",
+      "kind": "mesh",
+      "mesh": "Assets/EUFS/Racecar/meshes/lando.dae",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.7071067811865476,
+        0.0,
+        0.7071067811865476
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "left_front_wheel_visual_0__SIDE_CORRECT__VISUAL_TRANSFORM_PRESERVED",
+      "parent": "left_front_wheel",
+      "kind": "mesh",
+      "mesh": "Assets/EUFS/Racecar/meshes/wheel_left.dae",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.7071080798594737,
+        0.7071054825112364
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": "black"
+    },
+    {
+      "name": "right_front_wheel_visual_0__SIDE_CORRECT__VISUAL_TRANSFORM_PRESERVED",
+      "parent": "right_front_wheel",
+      "kind": "mesh",
+      "mesh": "Assets/EUFS/Racecar/meshes/wheel_right.dae",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.7071080798594737,
+        0.7071054825112364
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": "black"
+    },
+    {
+      "name": "left_rear_wheel_visual_0__SIDE_CORRECT__VISUAL_TRANSFORM_PRESERVED",
+      "parent": "left_rear_wheel",
+      "kind": "mesh",
+      "mesh": "Assets/EUFS/Racecar/meshes/wheel_left.dae",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.7071080798594737,
+        0.7071054825112364
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": "black"
+    },
+    {
+      "name": "right_rear_wheel_visual_0__SIDE_CORRECT__VISUAL_TRANSFORM_PRESERVED",
+      "parent": "right_rear_wheel",
+      "kind": "mesh",
+      "mesh": "Assets/EUFS/Racecar/meshes/wheel_right.dae",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.7071080798594737,
+        0.7071054825112364
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": "black"
+    },
+    {
+      "name": "velodyne_base_link_visual_0",
+      "parent": "velodyne_base_link",
+      "kind": "mesh",
+      "mesh": "Assets/EUFS/Racecar/meshes/VLP16_base_1.dae",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "velodyne_base_link_visual_1",
+      "parent": "velodyne_base_link",
+      "kind": "mesh",
+      "mesh": "Assets/EUFS/Racecar/meshes/VLP16_base_2.dae",
+      "primitive": "",
+      "position": [
+        -0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    },
+    {
+      "name": "velodyne_visual_0",
+      "parent": "velodyne",
+      "kind": "mesh",
+      "mesh": "Assets/EUFS/Racecar/meshes/VLP16_scan.dae",
+      "primitive": "",
+      "position": [
+        -0.0,
+        -0.0377,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materialHint": ""
+    }
+  ],
+  "physics": {
+    "rigidbodyMass": 250.0,
+    "wheelColliders": [
+      {
+        "name": "WheelCollider_FL",
+        "link": "left_front_wheel",
+        "position": [
+          -0.663186921281637,
+          1.0,
+          0.7484538111607046
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "radius": 0.2032,
+        "width": 0.2,
+        "mass": 20.0,
+        "suspensionDistance": 0.12,
+        "forceAppPointDistance": 0.0,
+        "steer": true,
+        "drive": true
+      },
+      {
+        "name": "WheelCollider_RL",
+        "link": "left_rear_wheel",
+        "position": [
+          -0.663186921281637,
+          1.0,
+          -0.7484538111607046
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "radius": 0.2032,
+        "width": 0.2,
+        "mass": 20.0,
+        "suspensionDistance": 0.12,
+        "forceAppPointDistance": 0.0,
+        "steer": false,
+        "drive": true
+      },
+      {
+        "name": "WheelCollider_FR",
+        "link": "right_front_wheel",
+        "position": [
+          0.663186921281637,
+          1.0,
+          0.7484538111607046
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "radius": 0.2032,
+        "width": 0.2,
+        "mass": 20.0,
+        "suspensionDistance": 0.12,
+        "forceAppPointDistance": 0.0,
+        "steer": true,
+        "drive": true
+      },
+      {
+        "name": "WheelCollider_RR",
+        "link": "right_rear_wheel",
+        "position": [
+          0.663186921281637,
+          1.0,
+          -0.7484538111607046
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "radius": 0.2032,
+        "width": 0.2,
+        "mass": 20.0,
+        "suspensionDistance": 0.12,
+        "forceAppPointDistance": 0.0,
+        "steer": false,
+        "drive": true
+      }
+    ],
+    "bodyColliders": [
+      {
+        "name": "BoxCollider_Chassis_Fallback_From_Wheels",
+        "link": "",
+        "position": [
+          0.0,
+          1.254,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "size": [
+          0.9947803819224555,
+          0.45,
+          1.1975260978571274
+        ],
+        "source": "fallback_from_wheel_positions"
+      }
+    ]
+  }
+}
