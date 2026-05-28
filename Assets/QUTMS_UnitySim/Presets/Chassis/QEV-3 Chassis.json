@@ -1,6 +1,6 @@
 {
     "presetName": "QEV-3 Chassis",
-    "chassisModelPrefabPath": "Assets/EUFS/Racecar/prefabs/QEV3_ChassisVisual_Centered.prefab",
+    "chassisModelPrefabPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/ChassisVisualCentred.prefab",
     "chassisColliderBoxPath": "",
     "chassisMassKg": 235.0,
     "gravityMps2": 9.8100004196167,

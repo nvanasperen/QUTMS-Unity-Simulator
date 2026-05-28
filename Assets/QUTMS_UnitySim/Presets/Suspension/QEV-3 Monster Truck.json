@@ -1,0 +1,10 @@
+{
+    "presetName": "QEV-3 Monster Truck",
+    "suspensionDistanceM": 1.5,
+    "springStrengthNPerM": 12000.0,
+    "damperStrengthNsPerM": 1400.0,
+    "targetPosition": 0.6499999761581421,
+    "wheelDampingRate": 5.0,
+    "forceAppPointDistanceM": 0.0,
+    "antiRollBarStiffness": 5000.0
+}

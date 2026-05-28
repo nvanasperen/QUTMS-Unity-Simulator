@@ -1,0 +1,23 @@
+{
+    "presetName": "Ferrari 250 GTO 1962",
+    "chassisModelPrefabPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/1962-ferrari-250-gto/FerrariChassis.prefab",
+    "chassisColliderBoxPath": "",
+    "chassisMassKg": 880.0,
+    "gravityMps2": 9.8100004196167,
+    "yawInertiaIzzKgM2": 1300.0,
+    "frontWeightFraction": 0.5199999809265137,
+    "chassisWheelbaseM": 2.4000000953674318,
+    "chassisFrontTrackM": 1.3539999723434449,
+    "chassisRearTrackM": 1.350000023841858,
+    "dragCoefficient": 0.4000000059604645,
+    "downforceCoefficient": 0.05000000074505806,
+    "minSteeringRad": -0.550000011920929,
+    "maxSteeringRad": 0.550000011920929,
+    "steeringLockTimeS": 1.7999999523162842,
+    "steeringCommandScale": 1.0,
+    "steeringPublishScale": 1.0,
+    "maxAccelerationMps2": 5.400000095367432,
+    "minAccelerationMps2": -8.5,
+    "maxVelocityMps": 77.77999877929688,
+    "minVelocityMps": 0.0
+}

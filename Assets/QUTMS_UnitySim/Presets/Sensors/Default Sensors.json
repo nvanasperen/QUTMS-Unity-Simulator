@@ -1,0 +1,97 @@
+{
+    "presetName": "Default Sensors",
+    "velodyneBaseMeshPrefabPath": "Assets/QUTMS_UnitySim/Sensors/VLP16_base_1.dae",
+    "sensorConditions": {
+        "presetName": "Default Sensors",
+        "lidarForwardOffsetM": -0.30000001192092898,
+        "lidarHeightM": 0.8500000238418579,
+        "lidarScanVerticalOffsetM": 0.037700001150369647,
+        "velodyneBaseMeshPrefab": {
+            "instanceID": 54502
+        },
+        "velodyneMeshLocalOffsetM": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "velodyneMeshLocalRotationDeg": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "velodyneMeshLocalScale": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "cameraForwardOffsetM": -0.20000000298023225,
+        "cameraHeightM": 0.949999988079071,
+        "cameraPitchDeg": 0.0,
+        "imuForwardOffsetM": 0.0,
+        "imuHeightM": 0.3499999940395355,
+        "lidarUpdateRateHz": 10.0,
+        "lidarMinViewDistanceM": 1.0,
+        "lidarMaxViewDistanceM": 20.0,
+        "lidarFovRad": 3.1415929794311525,
+        "lidarRangeNoiseM": 0.009999999776482582,
+        "lidarBearingNoiseRad": 0.0010000000474974514,
+        "cameraUpdateRateHz": 15.0,
+        "cameraMinViewDistanceM": 0.5,
+        "cameraMaxViewDistanceM": 10.0,
+        "cameraFovRad": 1.9198600053787232,
+        "cameraRangeNoiseM": 0.009999999776482582,
+        "cameraBearingNoiseRad": 0.009999999776482582,
+        "imuUpdateRateHz": 200.0,
+        "imuOrientationNoise": {
+            "x": 0.0010000000474974514,
+            "y": 0.0,
+            "z": 0.0010000000474974514
+        },
+        "imuAngularVelocityNoise": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.10000000149011612
+        },
+        "imuLinearAccelerationNoise": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "slamUpdateRateHz": 20.0,
+        "slamXNoiseM": 0.10000000149011612,
+        "slamYNoiseM": 0.10000000149011612
+    },
+    "motionNoise": {
+        "positionNoise": {
+            "x": 0.009999999776482582,
+            "y": 0.009999999776482582,
+            "z": 0.10000000149011612
+        },
+        "orientationNoise": {
+            "x": 0.0010000000474974514,
+            "y": 0.0,
+            "z": 0.0010000000474974514
+        },
+        "linearVelocityNoise": {
+            "x": 0.10000000149011612,
+            "y": 0.10000000149011612,
+            "z": 0.0
+        },
+        "angularVelocityNoise": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.10000000149011612
+        },
+        "linearAccelerationNoise": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        }
+    },
+    "wheelSpeedNoise": {
+        "frontLeftWheelSpeedNoise": 0.5,
+        "frontRightWheelSpeedNoise": 0.5,
+        "rearLeftWheelSpeedNoise": 0.30000001192092898,
+        "rearRightWheelSpeedNoise": 0.30000001192092898
+    }
+}

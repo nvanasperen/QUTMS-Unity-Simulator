@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 6679c4a183a004e42b96ed916ee7ea69, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.4315834
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6679c4a183a004e42b96ed916ee7ea69, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.4175341
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6679c4a183a004e42b96ed916ee7ea69, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.1322017
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6679c4a183a004e42b96ed916ee7ea69, type: 3}
       propertyPath: m_LocalRotation.w
@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: c26734092aa22c0439ea200df5df9ab5, type: 2}
     - target: {fileID: 919132149155446097, guid: 6679c4a183a004e42b96ed916ee7ea69, type: 3}
       propertyPath: m_Name
-      value: cone
+      value: OrangeCone
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

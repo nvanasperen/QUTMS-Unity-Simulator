@@ -1,9 +1,9 @@
 {
     "presetName": "QUTMS Dry Wheel Package",
-    "frontLeftWheelPath": "Assets/EUFS/Racecar/prefabs/WheelVisual_FL.prefab",
-    "frontRightWheelPath": "Assets/EUFS/Racecar/prefabs/WheelVisual_FR.prefab",
-    "rearLeftWheelPath": "Assets/EUFS/Racecar/prefabs/WheelVisual_RL.prefab",
-    "rearRightWheelPath": "Assets/EUFS/Racecar/prefabs/WheelVisual_RR.prefab",
+    "frontLeftWheelPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/WheelVisual_FL.prefab",
+    "frontRightWheelPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/WheelVisual_FR.prefab",
+    "rearLeftWheelPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/WheelVisual_RL.prefab",
+    "rearRightWheelPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/WheelVisual_RR.prefab",
     "wheelAssemblyMassKg": 8.0,
     "radiusM": 0.20319999754428864,
     "widthM": 0.20000000298023225,
@@ -18,7 +18,7 @@
     "scaleModelCentreOffsetWithVisualScale": true,
     "modelCentreOffsetM": {
         "x": 0.0,
-        "y": 0.0,
+        "y": 0.049300000071525577,
         "z": 0.0
     },
     "modelRotationOffsetDeg": {

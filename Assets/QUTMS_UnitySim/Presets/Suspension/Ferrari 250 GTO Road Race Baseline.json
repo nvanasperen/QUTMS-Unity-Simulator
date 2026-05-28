@@ -1,0 +1,10 @@
+{
+    "presetName": "Ferrari 250 GTO Road Race Baseline",
+    "suspensionDistanceM": 0.18000000715255738,
+    "springStrengthNPerM": 28000.0,
+    "damperStrengthNsPerM": 2800.0,
+    "targetPosition": 0.550000011920929,
+    "wheelDampingRate": 3.5,
+    "forceAppPointDistanceM": 0.05000000074505806,
+    "antiRollBarStiffness": 9000.0
+}

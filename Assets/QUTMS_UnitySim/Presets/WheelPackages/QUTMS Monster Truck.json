@@ -1,0 +1,29 @@
+{
+    "presetName": "QUTMS Monster Truck",
+    "frontLeftWheelPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/WheelVisual_FL.prefab",
+    "frontRightWheelPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/WheelVisual_FR.prefab",
+    "rearLeftWheelPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/WheelVisual_RL.prefab",
+    "rearRightWheelPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/WheelVisual_RR.prefab",
+    "wheelAssemblyMassKg": 1.0,
+    "radiusM": 0.6000000238418579,
+    "widthM": 1.0,
+    "tyreCoefficient": 1.0,
+    "pacejkaB": 12.5600004196167,
+    "pacejkaC": -1.3799999952316285,
+    "pacejkaD": 1.600000023841858,
+    "pacejkaE": -0.5799999833106995,
+    "autoScaleVisualMeshToTyreRadius": true,
+    "visualMeshNativeRadiusM": 0.2524999976158142,
+    "visualMeshScaleMultiplier": 1.0,
+    "scaleModelCentreOffsetWithVisualScale": true,
+    "modelCentreOffsetM": {
+        "x": 0.0,
+        "y": 0.049300000071525577,
+        "z": 0.0
+    },
+    "modelRotationOffsetDeg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    }
+}

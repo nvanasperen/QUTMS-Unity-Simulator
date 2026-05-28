@@ -1,16 +1,2 @@
 fileFormatVersion: 2
 guid: 96e927966f9e3f1489045a352799bc94
-MonoImporter:
-  externalObjects: {}
-  serializedVersion: 2
-  defaultReferences:
-  - trackCsv: {fileID: 4900000, guid: 6da9cdbe2f37233428b589b64cb84aeb, type: 3}
-  - blueConePrefab: {fileID: 1157406514434582099, guid: 48da596a13e358146847ceaa0bd7c9c3, type: 3}
-  - yellowConePrefab: {fileID: 687636321966503790, guid: 3cb3ada149cb8dd459874dd35594cca2, type: 3}
-  - orangeConePrefab: {fileID: 3093896111567339596, guid: 10a7f449562d45e49af0f5ae8c53183b, type: 3}
-  - bigOrangeConePrefab: {fileID: 5840662591386318041, guid: 387a18fa792580547af3ade3c363791f, type: 3}
-  executionOrder: 0
-  icon: {instanceID: 0}
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 

@@ -1,0 +1,29 @@
+{
+    "presetName": "Ferrari 250 GTO 15in Vintage Tyres",
+    "frontLeftWheelPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/1962-ferrari-250-gto/source/250 GTO FL.prefab",
+    "frontRightWheelPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/1962-ferrari-250-gto/source/250 GTO FR 1.prefab",
+    "rearLeftWheelPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/1962-ferrari-250-gto/source/250 GTO BL 1.prefab",
+    "rearRightWheelPath": "Assets/QUTMS_UnitySim/Vehicle/prefabs/1962-ferrari-250-gto/source/250 GTO BR 1.prefab",
+    "wheelAssemblyMassKg": 18.0,
+    "radiusM": 0.34200000762939455,
+    "widthM": 0.17499999701976777,
+    "tyreCoefficient": 0.8199999928474426,
+    "pacejkaB": 8.5,
+    "pacejkaC": 1.350000023841858,
+    "pacejkaD": 1.0499999523162842,
+    "pacejkaE": -0.3499999940395355,
+    "autoScaleVisualMeshToTyreRadius": true,
+    "visualMeshNativeRadiusM": 0.34200000762939455,
+    "visualMeshScaleMultiplier": 1.0,
+    "scaleModelCentreOffsetWithVisualScale": true,
+    "modelCentreOffsetM": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "modelRotationOffsetDeg": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    }
+}

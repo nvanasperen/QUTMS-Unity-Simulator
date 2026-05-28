@@ -1,6 +1,10 @@
 using System;
 using UnityEngine;
 
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+#endif
+
 #if UNITY_EDITOR
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +26,12 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
         Acceleration
     }
 
+    public enum TyreConeHitboxShape
+    {
+        Box,
+        Capsule
+    }
+
     [Serializable]
     public class ChassisPresetValues
     {
@@ -33,6 +43,12 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
 
         [InspectorName("Chassis Collider Box")]
         public GameObject chassisColliderBox;
+
+        [InspectorName("Chassis Visual Local Offset (m)")]
+        public Vector3 chassisVisualLocalOffsetM = Vector3.zero;
+
+        [InspectorName("Chassis Visual Local Rotation (deg)")]
+        public Vector3 chassisVisualLocalRotationDeg = Vector3.zero;
 
         [InspectorName("Chassis Mass (kg)")]
         public float chassisMassKg = 235.0f;
@@ -110,6 +126,8 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
             minAccelerationMps2 = -10.0f;
             maxVelocityMps = 30.0f;
             minVelocityMps = 0.0f;
+            chassisVisualLocalOffsetM = Vector3.zero;
+            chassisVisualLocalRotationDeg = Vector3.zero;
         }
 
         public void CopyFrom(ChassisPresetValues other)
@@ -138,6 +156,8 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
             minAccelerationMps2 = other.minAccelerationMps2;
             maxVelocityMps = other.maxVelocityMps;
             minVelocityMps = other.minVelocityMps;
+            chassisVisualLocalOffsetM = other.chassisVisualLocalOffsetM;
+            chassisVisualLocalRotationDeg = other.chassisVisualLocalRotationDeg;
         }
     }
 
@@ -531,6 +551,34 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
     {
         public string presetName = "Default Sensors";
 
+        [Header("LiDAR Mount")]
+        public float lidarForwardOffsetM = -0.30f;
+        public float lidarHeightM = 0.85f;
+        public float lidarScanVerticalOffsetM = 0.0377f;
+
+        [Header("LiDAR Assets")]
+        [InspectorName("Velodyne Base Mesh Prefab")]
+        public GameObject velodyneBaseMeshPrefab;
+
+        [InspectorName("Velodyne Mesh Local Offset (m)")]
+        public Vector3 velodyneBaseMeshLocalOffsetM = Vector3.zero;
+
+        [InspectorName("Velodyne Mesh Local Rotation (deg)")]
+        public Vector3 velodyneBaseMeshLocalRotationDeg = Vector3.zero;
+
+        [InspectorName("Velodyne Mesh Local Scale")]
+        public Vector3 velodyneBaseMeshLocalScale = Vector3.one;
+
+        [Header("Camera Mount")]
+        public float cameraForwardOffsetM = -0.20f;
+        public float cameraHeightM = 0.95f;
+        public float cameraPitchDeg = 8.0f;
+
+        [Header("IMU Mount")]
+        public float imuForwardOffsetM = 0.0f;
+        public float imuHeightM = 0.35f;
+
+        [Header("LiDAR Behaviour")]
         public float lidarUpdateRateHz = 10.0f;
         public float lidarMinViewDistanceM = 1.0f;
         public float lidarMaxViewDistanceM = 20.0f;
@@ -538,6 +586,7 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
         public float lidarRangeNoiseM = 0.01f;
         public float lidarBearingNoiseRad = 0.001f;
 
+        [Header("Camera Behaviour")]
         public float cameraUpdateRateHz = 15.0f;
         public float cameraMinViewDistanceM = 0.5f;
         public float cameraMaxViewDistanceM = 10.0f;
@@ -545,11 +594,13 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
         public float cameraRangeNoiseM = 0.01f;
         public float cameraBearingNoiseRad = 0.01f;
 
+        [Header("IMU Behaviour")]
         public float imuUpdateRateHz = 200.0f;
         public Vector3 imuOrientationNoise = new Vector3(0.001f, 0.0f, 0.001f);
         public Vector3 imuAngularVelocityNoise = new Vector3(0.0f, 0.0f, 0.1f);
         public Vector3 imuLinearAccelerationNoise = Vector3.zero;
 
+        [Header("SLAM Behaviour")]
         public float slamUpdateRateHz = 20.0f;
         public float slamXNoiseM = 0.1f;
         public float slamYNoiseM = 0.1f;
@@ -557,6 +608,20 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
         public void SetDefaults()
         {
             presetName = "Default Sensors";
+
+            lidarForwardOffsetM = -0.30f;
+            lidarHeightM = 0.85f;
+            lidarScanVerticalOffsetM = 0.0377f;
+            velodyneBaseMeshLocalOffsetM = Vector3.zero;
+            velodyneBaseMeshLocalRotationDeg = Vector3.zero;
+            velodyneBaseMeshLocalScale = Vector3.one;
+
+            cameraForwardOffsetM = -0.20f;
+            cameraHeightM = 0.95f;
+            cameraPitchDeg = 8.0f;
+
+            imuForwardOffsetM = 0.0f;
+            imuHeightM = 0.35f;
 
             lidarUpdateRateHz = 10.0f;
             lidarMinViewDistanceM = 1.0f;
@@ -588,6 +653,21 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
                 return;
 
             presetName = other.presetName;
+
+            lidarForwardOffsetM = other.lidarForwardOffsetM;
+            lidarHeightM = other.lidarHeightM;
+            lidarScanVerticalOffsetM = other.lidarScanVerticalOffsetM;
+            velodyneBaseMeshPrefab = other.velodyneBaseMeshPrefab;
+            velodyneBaseMeshLocalOffsetM = other.velodyneBaseMeshLocalOffsetM;
+            velodyneBaseMeshLocalRotationDeg = other.velodyneBaseMeshLocalRotationDeg;
+            velodyneBaseMeshLocalScale = other.velodyneBaseMeshLocalScale;
+
+            cameraForwardOffsetM = other.cameraForwardOffsetM;
+            cameraHeightM = other.cameraHeightM;
+            cameraPitchDeg = other.cameraPitchDeg;
+
+            imuForwardOffsetM = other.imuForwardOffsetM;
+            imuHeightM = other.imuHeightM;
 
             lidarUpdateRateHz = other.lidarUpdateRateHz;
             lidarMinViewDistanceM = other.lidarMinViewDistanceM;
@@ -712,6 +792,12 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
         public Transform rearLeftWheelVisual;
         public Transform rearRightWheelVisual;
 
+        public Transform wheelConeHitboxRoot;
+        public Transform frontLeftTyreConeHitbox;
+        public Transform frontRightTyreConeHitbox;
+        public Transform rearLeftTyreConeHitbox;
+        public Transform rearRightTyreConeHitbox;
+
         public float wheelColliderLocalYOffsetM = 0.0f;
         public float wheelColliderLocalZOffsetM = 0.0f;
 
@@ -721,10 +807,109 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
         public Camera forwardCamera;
     }
 
+    [Serializable]
+    public class TyreConeHitboxValues
+    {
+        [InspectorName("Enable Tyre Cone Hitboxes")]
+        public bool enableTyreConeHitboxes = true;
+
+        [InspectorName("Hitbox Shape")]
+        public TyreConeHitboxShape hitboxShape = TyreConeHitboxShape.Box;
+
+        [Header("Cone-Only Collision Layers")]
+        [Tooltip("If enabled, generated tyre hitboxes are put on a dedicated layer and that layer is configured to collide only with cone objects.")]
+        public bool useConeOnlyCollisionLayer = true;
+
+        [InspectorName("Tyre Hitbox Layer")]
+        public string tyreHitboxLayerName = "TyreHitbox";
+
+        [InspectorName("Cone Layer")]
+        public string coneLayerName = "Cone";
+
+        [Tooltip("Editor-only helper. Creates the TyreHitbox and Cone layers in Project Settings if they do not already exist.")]
+        public bool autoCreateLayersInEditor = true;
+
+        [Tooltip("Automatically configures the physics layer matrix so TyreHitbox collides with Cone only.")]
+        public bool autoConfigureLayerCollisionMatrix = true;
+
+        [InspectorName("Legacy Layer Name (Optional)")]
+        public string layerName = "";
+
+        [InspectorName("Is Trigger")]
+        public bool isTrigger = true;
+
+        [Header("Trigger Push Behaviour")]
+        [InspectorName("Push Cones From Trigger Hitboxes")]
+        public bool pushConesFromTriggerHitboxes = true;
+
+        [InspectorName("Cone Push Acceleration")]
+        public float conePushAcceleration = 28.0f;
+
+        [InspectorName("Cone Shove Velocity Change")]
+        public float coneShoveVelocityChange = 1.20f;
+
+        [InspectorName("Cone Upward Velocity Change")]
+        public float coneUpwardVelocityChange = 0.20f;
+
+        [InspectorName("Max Cone Speed From Hitboxes")]
+        public float maxConeSpeedFromHitboxes = 8.0f;
+
+        [InspectorName("Local Center Offset (m)")]
+        public Vector3 localCenterOffsetM = Vector3.zero;
+
+        [InspectorName("Width Multiplier")]
+        public float widthMultiplier = 1.20f;
+
+        [InspectorName("Vertical Radius Multiplier")]
+        public float verticalRadiusMultiplier = 0.80f;
+
+        [InspectorName("Forward Depth Multiplier")]
+        public float forwardDepthMultiplier = 0.95f;
+
+        [InspectorName("Capsule Radius Multiplier")]
+        public float capsuleRadiusMultiplier = 0.80f;
+
+        public void Normalize()
+        {
+            if (string.IsNullOrWhiteSpace(tyreHitboxLayerName))
+                tyreHitboxLayerName = "TyreHitbox";
+
+            if (string.IsNullOrWhiteSpace(coneLayerName))
+                coneLayerName = "Cone";
+
+            widthMultiplier = Mathf.Max(0.01f, widthMultiplier);
+            verticalRadiusMultiplier = Mathf.Clamp(verticalRadiusMultiplier, 0.05f, 1.50f);
+            forwardDepthMultiplier = Mathf.Clamp(forwardDepthMultiplier, 0.05f, 1.50f);
+            capsuleRadiusMultiplier = Mathf.Clamp(capsuleRadiusMultiplier, 0.05f, 1.50f);
+            conePushAcceleration = Mathf.Max(0.0f, conePushAcceleration);
+            coneShoveVelocityChange = Mathf.Max(0.0f, coneShoveVelocityChange);
+            coneUpwardVelocityChange = Mathf.Max(0.0f, coneUpwardVelocityChange);
+            maxConeSpeedFromHitboxes = Mathf.Max(0.1f, maxConeSpeedFromHitboxes);
+        }
+    }
+
     [Header("Runtime Inputs")]
     [Range(-1f, 1f)] public float steeringInput = 0.0f;
     [Range(0f, 1f)] public float throttleInput = 0.0f;
     [Range(0f, 1f)] public float brakeInput = 0.0f;
+
+    [Header("Debug Controller Input")]
+    [Tooltip("When enabled, this profile reads keyboard/gamepad input and writes only steeringInput/throttleInput/brakeInput. Wheel torque is still applied by the profile specs in ApplyDriveCommands(). Disable QUTMSControllerDrive when using this.")]
+    public bool enableDebugControllerInput = false;
+
+    public bool debugUseGamepad = true;
+    public bool debugKeyboardFallback = true;
+    public bool debugAllowReverseTorque = true;
+    public float debugReverseTorqueMultiplier = 0.45f;
+    public KeyCode debugBrakeKey = KeyCode.Space;
+    public KeyCode debugResetKey = KeyCode.R;
+    public float debugSteeringResponse = 10.0f;
+    public float debugThrottleResponse = 8.0f;
+    public float debugBrakeResponse = 12.0f;
+
+    [Header("Debug Controller Runtime")]
+    [Range(0f, 1f)] public float debugReverseInput = 0.0f;
+    public bool debugControllerHasInput = false;
 
     [Header("Car")]
     [InspectorName("Selected Chassis Preset")]
@@ -744,6 +929,9 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
 
     [Header("Wheels")]
     public WheelPackagePresetValues wheelPackage = new WheelPackagePresetValues();
+
+    [Header("Tyre Cone Hitboxes")]
+    public TyreConeHitboxValues tyreConeHitboxes = new TyreConeHitboxValues();
 
     [Header("Suspension")]
     public SuspensionPresetValues suspension = new SuspensionPresetValues();
@@ -772,9 +960,135 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (!Application.isPlaying)
+            return;
+
+        if (enableDebugControllerInput)
+            ReadDebugControllerInput();
+    }
+
+    private void ReadDebugControllerInput()
+    {
+        float targetSteer = 0.0f;
+        float targetThrottle = 0.0f;
+        float targetBrake = 0.0f;
+        float targetReverse = 0.0f;
+        bool resetPressed = false;
+
+#if ENABLE_INPUT_SYSTEM
+        if (debugUseGamepad && Gamepad.current != null)
+        {
+            Gamepad pad = Gamepad.current;
+            targetSteer = ApplyDebugDeadzone(pad.leftStick.x.ReadValue(), 0.05f);
+            targetThrottle = Mathf.Clamp01(pad.rightTrigger.ReadValue());
+            targetReverse = Mathf.Clamp01(pad.leftTrigger.ReadValue());
+            targetBrake = pad.leftShoulder.isPressed || pad.buttonWest.isPressed ? 1.0f : 0.0f;
+            resetPressed = pad.buttonEast.wasPressedThisFrame;
+        }
+#endif
+
+#if ENABLE_LEGACY_INPUT_MANAGER
+        if (debugKeyboardFallback)
+        {
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+                targetSteer -= 1.0f;
+
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+                targetSteer += 1.0f;
+
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+                targetThrottle = 1.0f;
+
+            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+                targetReverse = 1.0f;
+
+            if (Input.GetKey(debugBrakeKey))
+                targetBrake = 1.0f;
+
+            if (Input.GetKeyDown(debugResetKey))
+                resetPressed = true;
+        }
+#endif
+
+        targetSteer = Mathf.Clamp(targetSteer, -1.0f, 1.0f);
+        targetThrottle = Mathf.Clamp01(targetThrottle);
+        targetReverse = debugAllowReverseTorque ? Mathf.Clamp01(targetReverse) : 0.0f;
+        targetBrake = Mathf.Clamp01(targetBrake);
+
+        float steerStep = Mathf.Max(0.01f, debugSteeringResponse) * Time.deltaTime;
+        float throttleStep = Mathf.Max(0.01f, debugThrottleResponse) * Time.deltaTime;
+        float brakeStep = Mathf.Max(0.01f, debugBrakeResponse) * Time.deltaTime;
+
+        steeringInput = Mathf.MoveTowards(steeringInput, targetSteer, steerStep);
+        throttleInput = Mathf.MoveTowards(throttleInput, targetThrottle, throttleStep);
+        debugReverseInput = Mathf.MoveTowards(debugReverseInput, targetReverse, throttleStep);
+        brakeInput = Mathf.MoveTowards(brakeInput, targetBrake, brakeStep);
+
+        debugControllerHasInput =
+            Mathf.Abs(steeringInput) > 0.01f ||
+            throttleInput > 0.01f ||
+            debugReverseInput > 0.01f ||
+            brakeInput > 0.01f;
+
+        if (resetPressed)
+            ResetGeneratedVehiclePose();
+    }
+
+    private static float ApplyDebugDeadzone(float value, float deadzone)
+    {
+        if (Mathf.Abs(value) < Mathf.Max(0.0f, deadzone))
+            return 0.0f;
+
+        return Mathf.Clamp(value, -1.0f, 1.0f);
+    }
+
+    private void ResetGeneratedVehiclePose()
+    {
+        Rigidbody rb = sceneBinding != null ? sceneBinding.targetRigidbody : null;
+        Transform root = rb != null ? rb.transform : sceneBinding != null ? sceneBinding.physicsRoot : null;
+
+        if (root == null)
+            return;
+
+        root.position = transform.position + Vector3.up * Mathf.Max(0.25f, wheelPackage.radiusM + 0.35f);
+        root.rotation = transform.rotation;
+
+        if (rb != null)
+        {
+#if UNITY_6000_0_OR_NEWER
+            rb.linearVelocity = Vector3.zero;
+#else
+            rb.velocity = Vector3.zero;
+#endif
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        ClearWheelRuntimeForces(sceneBinding.frontLeftWheelCollider);
+        ClearWheelRuntimeForces(sceneBinding.frontRightWheelCollider);
+        ClearWheelRuntimeForces(sceneBinding.rearLeftWheelCollider);
+        ClearWheelRuntimeForces(sceneBinding.rearRightWheelCollider);
+    }
+
+    private static void ClearWheelRuntimeForces(WheelCollider wheel)
+    {
+        if (wheel == null)
+            return;
+
+        wheel.motorTorque = 0.0f;
+        wheel.brakeTorque = 0.0f;
+        wheel.steerAngle = 0.0f;
+    }
+
     public void RefreshDerivedCarValues()
     {
         wheelPackage.NormalizeVisualSettings();
+
+        if (tyreConeHitboxes == null)
+            tyreConeHitboxes = new TyreConeHitboxValues();
+
+        tyreConeHitboxes.Normalize();
         car.RefreshFrom(chassis, wheelPackage, suspension);
     }
 
@@ -841,7 +1155,10 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
         BuildChassisCollider(physicsRoot);
         BuildWheelColliders(physicsRoot);
         BuildWheelVisuals(physicsRoot);
+        BuildWheelConeHitboxes(physicsRoot);
+        BuildSensorRig(physicsRoot);
         SyncWheelVisualsToColliders();
+        SyncTyreConeHitboxesToColliders();
 
 #if UNITY_EDITOR
         EditorUtility.SetDirty(this);
@@ -852,8 +1169,8 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
     private void BuildChassisVisual(Transform physicsRoot)
     {
         Transform visualRoot = EnsureNamedChild(physicsRoot, "Chassis Visual");
-        visualRoot.localPosition = new Vector3(0.0f, wheelPackage.radiusM, 0.0f);
-        visualRoot.localRotation = Quaternion.identity;
+        visualRoot.localPosition = chassis.chassisVisualLocalOffsetM;
+        visualRoot.localRotation = Quaternion.Euler(chassis.chassisVisualLocalRotationDeg);
         visualRoot.localScale = Vector3.one;
         sceneBinding.chassisVisualRoot = visualRoot;
 
@@ -1091,6 +1408,327 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
         return slot;
     }
 
+    private void BuildWheelConeHitboxes(Transform physicsRoot)
+    {
+        Transform hitboxRoot = EnsureNamedChild(physicsRoot, "Wheel Cone Hitboxes");
+        hitboxRoot.localPosition = Vector3.zero;
+        hitboxRoot.localRotation = Quaternion.identity;
+        hitboxRoot.localScale = Vector3.one;
+        sceneBinding.wheelConeHitboxRoot = hitboxRoot;
+
+        ClearChildren(hitboxRoot);
+
+        if (tyreConeHitboxes == null)
+            tyreConeHitboxes = new TyreConeHitboxValues();
+
+        tyreConeHitboxes.Normalize();
+        PrepareTyreConeHitboxCollisionLayers();
+
+        if (!tyreConeHitboxes.enableTyreConeHitboxes)
+        {
+            sceneBinding.frontLeftTyreConeHitbox = null;
+            sceneBinding.frontRightTyreConeHitbox = null;
+            sceneBinding.rearLeftTyreConeHitbox = null;
+            sceneBinding.rearRightTyreConeHitbox = null;
+            return;
+        }
+
+        sceneBinding.frontLeftTyreConeHitbox = ConfigureTyreConeHitbox(
+            hitboxRoot,
+            "Front Left Tyre Cone Hitbox",
+            sceneBinding.frontLeftWheelCollider
+        );
+
+        sceneBinding.frontRightTyreConeHitbox = ConfigureTyreConeHitbox(
+            hitboxRoot,
+            "Front Right Tyre Cone Hitbox",
+            sceneBinding.frontRightWheelCollider
+        );
+
+        sceneBinding.rearLeftTyreConeHitbox = ConfigureTyreConeHitbox(
+            hitboxRoot,
+            "Rear Left Tyre Cone Hitbox",
+            sceneBinding.rearLeftWheelCollider
+        );
+
+        sceneBinding.rearRightTyreConeHitbox = ConfigureTyreConeHitbox(
+            hitboxRoot,
+            "Rear Right Tyre Cone Hitbox",
+            sceneBinding.rearRightWheelCollider
+        );
+    }
+
+    private Transform ConfigureTyreConeHitbox(Transform parent, string objectName, WheelCollider wheelCollider)
+    {
+        if (parent == null || wheelCollider == null)
+            return null;
+
+        GameObject hitboxObject = new GameObject(objectName);
+        hitboxObject.transform.SetParent(parent, false);
+        hitboxObject.transform.localPosition = Vector3.zero;
+        hitboxObject.transform.localRotation = Quaternion.identity;
+        hitboxObject.transform.localScale = Vector3.one;
+
+        ApplyTyreConeHitboxLayer(hitboxObject);
+
+        float radius = Mathf.Max(0.01f, wheelPackage.radiusM);
+        float width = Mathf.Max(0.01f, wheelPackage.widthM);
+
+        if (tyreConeHitboxes.hitboxShape == TyreConeHitboxShape.Capsule)
+        {
+            CapsuleCollider capsule = hitboxObject.AddComponent<CapsuleCollider>();
+            capsule.direction = 0; // X axis = tyre width / axle direction.
+            capsule.radius = Mathf.Max(0.005f, radius * tyreConeHitboxes.capsuleRadiusMultiplier);
+            capsule.height = Mathf.Max(width * tyreConeHitboxes.widthMultiplier, capsule.radius * 2.0f + 0.001f);
+            capsule.center = tyreConeHitboxes.localCenterOffsetM;
+            capsule.isTrigger = tyreConeHitboxes.isTrigger;
+        }
+        else
+        {
+            BoxCollider box = hitboxObject.AddComponent<BoxCollider>();
+            box.size = new Vector3(
+                width * tyreConeHitboxes.widthMultiplier,
+                radius * 2.0f * tyreConeHitboxes.verticalRadiusMultiplier,
+                radius * 2.0f * tyreConeHitboxes.forwardDepthMultiplier
+            );
+            box.center = tyreConeHitboxes.localCenterOffsetM;
+            box.isTrigger = tyreConeHitboxes.isTrigger;
+        }
+
+        QUTMSTyreConeHitboxPusher pusher = hitboxObject.GetComponent<QUTMSTyreConeHitboxPusher>();
+        if (pusher == null)
+            pusher = hitboxObject.AddComponent<QUTMSTyreConeHitboxPusher>();
+
+        pusher.enabled = tyreConeHitboxes.pushConesFromTriggerHitboxes;
+        pusher.coneLayerName = tyreConeHitboxes.coneLayerName;
+        pusher.pushAcceleration = tyreConeHitboxes.conePushAcceleration;
+        pusher.shoveVelocityChange = tyreConeHitboxes.coneShoveVelocityChange;
+        pusher.upwardVelocityChange = tyreConeHitboxes.coneUpwardVelocityChange;
+        pusher.maxConeSpeed = tyreConeHitboxes.maxConeSpeedFromHitboxes;
+
+        SyncTyreConeHitboxToWheel(wheelCollider, hitboxObject.transform);
+        return hitboxObject.transform;
+    }
+
+    private void SyncTyreConeHitboxesToColliders()
+    {
+        if (sceneBinding == null)
+            return;
+
+        SyncTyreConeHitboxToWheel(sceneBinding.frontLeftWheelCollider, sceneBinding.frontLeftTyreConeHitbox);
+        SyncTyreConeHitboxToWheel(sceneBinding.frontRightWheelCollider, sceneBinding.frontRightTyreConeHitbox);
+        SyncTyreConeHitboxToWheel(sceneBinding.rearLeftWheelCollider, sceneBinding.rearLeftTyreConeHitbox);
+        SyncTyreConeHitboxToWheel(sceneBinding.rearRightWheelCollider, sceneBinding.rearRightTyreConeHitbox);
+    }
+
+    private void SyncTyreConeHitboxToWheel(WheelCollider wheelCollider, Transform hitbox)
+    {
+        if (wheelCollider == null || hitbox == null)
+            return;
+
+        Vector3 position = wheelCollider.transform.position;
+
+        if (Application.isPlaying)
+            wheelCollider.GetWorldPose(out position, out _);
+
+        Quaternion steerRotation = wheelCollider.transform.rotation * Quaternion.Euler(0.0f, wheelCollider.steerAngle, 0.0f);
+        hitbox.SetPositionAndRotation(position, steerRotation);
+        hitbox.localScale = Vector3.one;
+    }
+
+    private static void ApplyOptionalLayer(GameObject target, string layerName)
+    {
+        if (target == null || string.IsNullOrWhiteSpace(layerName))
+            return;
+
+        int layer = LayerMask.NameToLayer(layerName);
+
+        if (layer >= 0)
+            target.layer = layer;
+    }
+
+    private void ApplyTyreConeHitboxLayer(GameObject target)
+    {
+        if (target == null || tyreConeHitboxes == null)
+            return;
+
+        string requestedLayer = tyreConeHitboxes.useConeOnlyCollisionLayer
+            ? tyreConeHitboxes.tyreHitboxLayerName
+            : tyreConeHitboxes.layerName;
+
+        ApplyOptionalLayer(target, requestedLayer);
+    }
+
+    private void PrepareTyreConeHitboxCollisionLayers()
+    {
+        if (tyreConeHitboxes == null || !tyreConeHitboxes.useConeOnlyCollisionLayer)
+            return;
+
+#if UNITY_EDITOR
+        if (tyreConeHitboxes.autoCreateLayersInEditor)
+        {
+            EnsureProjectLayerExists(tyreConeHitboxes.tyreHitboxLayerName);
+            EnsureProjectLayerExists(tyreConeHitboxes.coneLayerName);
+        }
+#endif
+
+        if (!tyreConeHitboxes.autoConfigureLayerCollisionMatrix)
+            return;
+
+        int tyreLayer = LayerMask.NameToLayer(tyreConeHitboxes.tyreHitboxLayerName);
+        int coneLayer = LayerMask.NameToLayer(tyreConeHitboxes.coneLayerName);
+
+        if (tyreLayer < 0 || coneLayer < 0)
+            return;
+
+        for (int i = 0; i < 32; i++)
+            Physics.IgnoreLayerCollision(tyreLayer, i, i != coneLayer);
+
+        Physics.IgnoreLayerCollision(tyreLayer, coneLayer, false);
+    }
+
+#if UNITY_EDITOR
+    private static void EnsureProjectLayerExists(string layerName)
+    {
+        if (string.IsNullOrWhiteSpace(layerName))
+            return;
+
+        if (LayerMask.NameToLayer(layerName) >= 0)
+            return;
+
+        SerializedObject tagManager = new SerializedObject(
+            AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]
+        );
+
+        SerializedProperty layers = tagManager.FindProperty("layers");
+
+        for (int i = 8; i < layers.arraySize; i++)
+        {
+            SerializedProperty layer = layers.GetArrayElementAtIndex(i);
+
+            if (string.IsNullOrWhiteSpace(layer.stringValue))
+            {
+                layer.stringValue = layerName;
+                tagManager.ApplyModifiedProperties();
+                AssetDatabase.SaveAssets();
+                return;
+            }
+        }
+
+        Debug.LogWarning("[QUTMSVehicleSimulationProfile] No free user layer slot available for '" + layerName + "'.");
+    }
+#endif
+
+    private void BuildSensorRig(Transform physicsRoot)
+    {
+        Transform sensorRoot = EnsureNamedChild(physicsRoot, "Sensor Rig");
+        sensorRoot.localPosition = Vector3.zero;
+        sensorRoot.localRotation = Quaternion.identity;
+        sensorRoot.localScale = Vector3.one;
+
+        sceneBinding.sensorRoot = sensorRoot;
+
+        QUTMSSensorRig rig = sensorRoot.GetComponent<QUTMSSensorRig>();
+        if (rig == null)
+            rig = sensorRoot.gameObject.AddComponent<QUTMSSensorRig>();
+
+        rig.sensorRoot = sensorRoot;
+        rig.createVelodynePlaceholder = false;
+        rig.createForwardCamera = false;
+
+        ClearChildren(sensorRoot);
+
+        Vector3 lidarBaseLocalPosition = new Vector3(
+            0.0f,
+            Mathf.Max(0.0f, sensorConditions.lidarHeightM),
+            sensorConditions.lidarForwardOffsetM
+        );
+
+        Transform velodyneBase = EnsureNamedChild(sensorRoot, "Velodyne_VLP16_Base");
+        velodyneBase.localPosition = lidarBaseLocalPosition;
+        velodyneBase.localRotation = Quaternion.identity;
+        velodyneBase.localScale = Vector3.one;
+
+        if (sensorConditions.velodyneBaseMeshPrefab != null)
+        {
+            GameObject velodyneMesh = InstantiateProfileObject(
+                sensorConditions.velodyneBaseMeshPrefab,
+                velodyneBase,
+                "Velodyne_Base_Mesh"
+            );
+
+            velodyneMesh.transform.localPosition = sensorConditions.velodyneBaseMeshLocalOffsetM;
+            velodyneMesh.transform.localRotation = Quaternion.Euler(sensorConditions.velodyneBaseMeshLocalRotationDeg);
+            velodyneMesh.transform.localScale = new Vector3(
+                Mathf.Approximately(sensorConditions.velodyneBaseMeshLocalScale.x, 0.0f) ? 1.0f : sensorConditions.velodyneBaseMeshLocalScale.x,
+                Mathf.Approximately(sensorConditions.velodyneBaseMeshLocalScale.y, 0.0f) ? 1.0f : sensorConditions.velodyneBaseMeshLocalScale.y,
+                Mathf.Approximately(sensorConditions.velodyneBaseMeshLocalScale.z, 0.0f) ? 1.0f : sensorConditions.velodyneBaseMeshLocalScale.z
+            );
+
+            RemovePhysicsFromVisualObject(velodyneMesh);
+        }
+
+        Transform velodyneScan = EnsureNamedChild(sensorRoot, "Velodyne_VLP16_Scan");
+        velodyneScan.localPosition = lidarBaseLocalPosition + new Vector3(
+            0.0f,
+            sensorConditions.lidarScanVerticalOffsetM,
+            0.0f
+        );
+        velodyneScan.localRotation = Quaternion.identity;
+        velodyneScan.localScale = Vector3.one;
+
+        QUTMSConeDetectionSensor coneDetectionSensor = velodyneScan.GetComponent<QUTMSConeDetectionSensor>();
+        if (coneDetectionSensor == null)
+            coneDetectionSensor = velodyneScan.gameObject.AddComponent<QUTMSConeDetectionSensor>();
+
+        coneDetectionSensor.sensorTransform = velodyneScan;
+        coneDetectionSensor.lidarMaxRangeM = Mathf.Max(0.01f, sensorConditions.lidarMaxViewDistanceM);
+        coneDetectionSensor.lidarMinRangeM = Mathf.Max(0.0f, sensorConditions.lidarMinViewDistanceM);
+        coneDetectionSensor.lidarHorizontalFovDeg = Mathf.Clamp(sensorConditions.lidarFovRad * Mathf.Rad2Deg, 1.0f, 360.0f);
+        coneDetectionSensor.lidarOnlyForward = coneDetectionSensor.lidarHorizontalFovDeg < 359.0f;
+        coneDetectionSensor.cameraMaxRangeM = Mathf.Max(0.01f, sensorConditions.cameraMaxViewDistanceM);
+        coneDetectionSensor.cameraMinRangeM = Mathf.Max(0.0f, sensorConditions.cameraMinViewDistanceM);
+        coneDetectionSensor.cameraHorizontalFovDeg = Mathf.Clamp(sensorConditions.cameraFovRad * Mathf.Rad2Deg, 1.0f, 180.0f);
+        coneDetectionSensor.cameraOnlyForward = true;
+        coneDetectionSensor.scanRateHz = Mathf.Max(0.01f, sensorConditions.lidarUpdateRateHz);
+        coneDetectionSensor.refreshConeCacheOnStart = true;
+        coneDetectionSensor.refreshConeCacheEachScan = false;
+        coneDetectionSensor.printDetections = true;
+        coneDetectionSensor.maxPrintedDetections = 12;
+        coneDetectionSensor.drawDebug = true;
+
+        Transform cameraTransform = EnsureNamedChild(sensorRoot, "Forward_Camera");
+        cameraTransform.localPosition = new Vector3(
+            0.0f,
+            Mathf.Max(0.0f, sensorConditions.cameraHeightM),
+            sensorConditions.cameraForwardOffsetM
+        );
+        cameraTransform.localRotation = Quaternion.Euler(sensorConditions.cameraPitchDeg, 0.0f, 0.0f);
+        cameraTransform.localScale = Vector3.one;
+
+        Camera forwardCamera = cameraTransform.GetComponent<Camera>();
+        if (forwardCamera == null)
+            forwardCamera = cameraTransform.gameObject.AddComponent<Camera>();
+
+        forwardCamera.fieldOfView = Mathf.Clamp(sensorConditions.cameraFovRad * Mathf.Rad2Deg, 1.0f, 179.0f);
+        forwardCamera.nearClipPlane = Mathf.Max(0.001f, sensorConditions.cameraMinViewDistanceM);
+        forwardCamera.farClipPlane = Mathf.Max(forwardCamera.nearClipPlane + 0.001f, sensorConditions.cameraMaxViewDistanceM);
+        forwardCamera.enabled = false;
+
+        Transform imu = EnsureNamedChild(sensorRoot, "IMU");
+        imu.localPosition = new Vector3(
+            0.0f,
+            Mathf.Max(0.0f, sensorConditions.imuHeightM),
+            sensorConditions.imuForwardOffsetM
+        );
+        imu.localRotation = Quaternion.identity;
+        imu.localScale = Vector3.one;
+
+        sceneBinding.lidarTransform = velodyneScan;
+        sceneBinding.forwardCamera = forwardCamera;
+        sceneBinding.imuTransform = imu;
+    }
+
     private void ConfigureRigidbody(Rigidbody rb)
     {
         if (rb == null)
@@ -1125,6 +1763,8 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
     {
         if (!Application.isPlaying || sceneBinding.targetRigidbody == null)
             return;
+
+        SyncTyreConeHitboxesToColliders();
 
         ApplyDownforce();
         ApplyAntiRollBars();
@@ -1185,6 +1825,9 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
         float maxWheelTorque = (maxTotalDriveForce / 4.0f) * car.wheelRadiusM;
         float appliedMotorTorque = throttleInput * maxWheelTorque;
 
+        if (enableDebugControllerInput && debugAllowReverseTorque && debugReverseInput > 0.01f)
+            appliedMotorTorque = -debugReverseInput * maxWheelTorque * Mathf.Max(0.0f, debugReverseTorqueMultiplier);
+
         sceneBinding.frontLeftWheelCollider.motorTorque = appliedMotorTorque;
         sceneBinding.frontRightWheelCollider.motorTorque = appliedMotorTorque;
         sceneBinding.rearLeftWheelCollider.motorTorque = appliedMotorTorque;
@@ -1203,6 +1846,7 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
     private void LateUpdate()
     {
         SyncWheelVisualsToColliders();
+        SyncTyreConeHitboxesToColliders();
     }
 
     private void SyncWheelVisualsToColliders()
@@ -1283,10 +1927,20 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
         GameObject instance = null;
 
 #if UNITY_EDITOR
-        if (!Application.isPlaying && PrefabUtility.IsPartOfPrefabAsset(source))
+        if (!Application.isPlaying)
         {
-            UnityEngine.Object prefabObject = PrefabUtility.InstantiatePrefab(source, parent);
-            instance = prefabObject as GameObject;
+            string path = AssetDatabase.GetAssetPath(source);
+
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                UnityEngine.Object prefabObject = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+
+                if (prefabObject != null)
+                    instance = PrefabUtility.InstantiatePrefab(prefabObject, parent) as GameObject;
+            }
+
+            if (instance == null && PrefabUtility.IsPartOfPrefabAsset(source))
+                instance = PrefabUtility.InstantiatePrefab(source, parent) as GameObject;
         }
 #endif
 
@@ -1294,6 +1948,7 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
             instance = Instantiate(source, parent);
 
         instance.name = instanceName;
+        instance.transform.SetParent(parent, false);
         return instance;
     }
 
@@ -1319,19 +1974,119 @@ public class QUTMSVehicleSimulationProfile : MonoBehaviour
     }
 }
 
+public class QUTMSTyreConeHitboxPusher : MonoBehaviour
+{
+    public string coneLayerName = "Cone";
+    public float pushAcceleration = 28.0f;
+    public float shoveVelocityChange = 1.20f;
+    public float upwardVelocityChange = 0.20f;
+    public float maxConeSpeed = 8.0f;
+
+    private int coneLayer = -2;
+    private Rigidbody carRigidbody;
+
+    private void Awake()
+    {
+        ResolveReferences();
+    }
+
+    private void OnValidate()
+    {
+        ResolveReferences();
+    }
+
+    private void ResolveReferences()
+    {
+        coneLayer = string.IsNullOrWhiteSpace(coneLayerName) ? -1 : LayerMask.NameToLayer(coneLayerName);
+        carRigidbody = GetComponentInParent<Rigidbody>();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        PushCone(other, true);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        PushCone(other, false);
+    }
+
+    private void PushCone(Collider other, bool entering)
+    {
+        if (other == null)
+            return;
+
+        if (coneLayer >= 0 && other.gameObject.layer != coneLayer)
+            return;
+
+        Rigidbody coneRigidbody = other.attachedRigidbody;
+
+        if (coneRigidbody == null || coneRigidbody == carRigidbody || coneRigidbody.isKinematic)
+            return;
+
+        Vector3 pushDirection = coneRigidbody.worldCenterOfMass - transform.position;
+        pushDirection.y = 0.0f;
+
+        if (pushDirection.sqrMagnitude < 0.0001f)
+        {
+            if (carRigidbody != null)
+            {
+#if UNITY_6000_0_OR_NEWER
+                Vector3 carVelocity = carRigidbody.linearVelocity;
+#else
+                Vector3 carVelocity = carRigidbody.velocity;
+#endif
+                carVelocity.y = 0.0f;
+                pushDirection = carVelocity.sqrMagnitude > 0.0001f ? carVelocity.normalized : transform.forward;
+            }
+            else
+            {
+                pushDirection = transform.forward;
+            }
+        }
+        else
+        {
+            pushDirection.Normalize();
+        }
+
+        coneRigidbody.AddForce(pushDirection * Mathf.Max(0.0f, pushAcceleration), ForceMode.Acceleration);
+
+        if (entering)
+        {
+            Vector3 velocityChange = pushDirection * Mathf.Max(0.0f, shoveVelocityChange);
+            velocityChange += Vector3.up * Mathf.Max(0.0f, upwardVelocityChange);
+            coneRigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+        }
+
+#if UNITY_6000_0_OR_NEWER
+        Vector3 velocity = coneRigidbody.linearVelocity;
+        float speed = velocity.magnitude;
+        if (speed > maxConeSpeed)
+            coneRigidbody.linearVelocity = velocity.normalized * maxConeSpeed;
+#else
+        Vector3 velocity = coneRigidbody.velocity;
+        float speed = velocity.magnitude;
+        if (speed > maxConeSpeed)
+            coneRigidbody.velocity = velocity.normalized * maxConeSpeed;
+#endif
+    }
+}
+
 #if UNITY_EDITOR
 [CustomEditor(typeof(QUTMSVehicleSimulationProfile))]
 public class QUTMSVehicleSimulationProfileEditor : Editor
 {
-    private const string ChassisPresetFolder = "Assets/QUTMS/Presets/Chassis";
-    private const string WheelPackagePresetFolder = "Assets/QUTMS/Presets/WheelPackages";
-    private const string SuspensionPresetFolder = "Assets/QUTMS/Presets/Suspension";
-    private const string TrackConditionPresetFolder = "Assets/QUTMS/Presets/TrackConditions";
-    private const string SensorPresetFolder = "Assets/QUTMS/Presets/Sensors";
+    private const string ChassisPresetFolder = "Assets/QUTMS_UnitySim/Presets/Chassis";
+    private const string WheelPackagePresetFolder = "Assets/QUTMS_UnitySim/Presets/WheelPackages";
+    private const string SuspensionPresetFolder = "Assets/QUTMS_UnitySim/Presets/Suspension";
+    private const string TrackConditionPresetFolder = "Assets/QUTMS_UnitySim/Presets/TrackConditions";
+    private const string SensorPresetFolder = "Assets/QUTMS_UnitySim/Presets/Sensors";
 
+    private bool showDebugControllerInput = true;
     private bool showDerivedCarValues = true;
     private bool showChassis = true;
     private bool showWheelPackage = true;
+    private bool showTyreConeHitboxes = true;
     private bool showSuspension = true;
     private bool showTrackConditions = false;
     private bool showSensorConditions = false;
@@ -1346,8 +2101,10 @@ public class QUTMSVehicleSimulationProfileEditor : Editor
         serializedObject.Update();
 
         DrawCarSection(values);
+        DrawDebugControllerInputSection();
         DrawChassisSection(values);
         DrawWheelPackageSection(values);
+        DrawTyreConeHitboxSection(values);
         DrawSuspensionSection(values);
         DrawTrackConditionsSection(values);
         DrawSensorsSection(values);
@@ -1504,6 +2261,36 @@ public class QUTMSVehicleSimulationProfileEditor : Editor
         GUILayout.EndHorizontal();
     }
 
+    private void DrawDebugControllerInputSection()
+    {
+        EditorGUILayout.Space(12.0f);
+        EditorGUILayout.LabelField("Debug Controller Input", EditorStyles.boldLabel);
+
+        showDebugControllerInput = EditorGUILayout.Foldout(showDebugControllerInput, "Debug Controller Input", true);
+
+        if (!showDebugControllerInput)
+            return;
+
+        EditorGUI.indentLevel++;
+
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("enableDebugControllerInput"), new GUIContent("Enable Debug Controller Input"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("debugUseGamepad"), new GUIContent("Use Gamepad"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("debugKeyboardFallback"), new GUIContent("Keyboard Fallback"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("debugAllowReverseTorque"), new GUIContent("Allow Reverse Torque"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("debugReverseTorqueMultiplier"), new GUIContent("Reverse Torque Multiplier"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("debugBrakeKey"), new GUIContent("Brake Key"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("debugResetKey"), new GUIContent("Reset Key"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("debugSteeringResponse"), new GUIContent("Steering Response"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("debugThrottleResponse"), new GUIContent("Throttle Response"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("debugBrakeResponse"), new GUIContent("Brake Response"));
+
+        EditorGUILayout.Space(4.0f);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("debugReverseInput"), new GUIContent("Reverse Input"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("debugControllerHasInput"), new GUIContent("Controller Has Input"));
+
+        EditorGUI.indentLevel--;
+    }
+
     private void DrawChassisSection(QUTMSVehicleSimulationProfile values)
     {
         EditorGUILayout.Space(12.0f);
@@ -1512,7 +2299,12 @@ public class QUTMSVehicleSimulationProfileEditor : Editor
         DrawChildFieldsWithoutRootLabel(serializedObject.FindProperty("chassis"), "Chassis Values", ref showChassis);
 
         if (GUILayout.Button("Save As New Chassis Preset"))
+        {
+            serializedObject.ApplyModifiedProperties();
+            values.RefreshDerivedCarValues();
+            EditorUtility.SetDirty(values);
             QUTMSChassisPresetSaveWindow.Open(values);
+        }
     }
 
     private void DrawWheelPackageSection(QUTMSVehicleSimulationProfile values)
@@ -1523,7 +2315,25 @@ public class QUTMSVehicleSimulationProfileEditor : Editor
         DrawChildFieldsWithoutRootLabel(serializedObject.FindProperty("wheelPackage"), "Wheel Package Values", ref showWheelPackage);
 
         if (GUILayout.Button("Save As New Wheel Package Preset"))
+        {
+            serializedObject.ApplyModifiedProperties();
+            values.RefreshDerivedCarValues();
+            EditorUtility.SetDirty(values);
             QUTMSWheelPackagePresetSaveWindow.Open(values);
+        }
+    }
+
+    private void DrawTyreConeHitboxSection(QUTMSVehicleSimulationProfile values)
+    {
+        EditorGUILayout.Space(12.0f);
+        EditorGUILayout.LabelField("Tyre Cone Hitboxes", EditorStyles.boldLabel);
+
+        DrawChildFieldsWithoutRootLabel(serializedObject.FindProperty("tyreConeHitboxes"), "Generated Tyre Hitbox Values", ref showTyreConeHitboxes);
+
+        EditorGUILayout.HelpBox(
+            "These are invisible compound colliders generated around each tyre so cone contact matches the visible tyre width. They do not drive the car; WheelColliders still own vehicle dynamics.",
+            MessageType.Info
+        );
     }
 
     private void DrawSuspensionSection(QUTMSVehicleSimulationProfile values)
@@ -1534,7 +2344,12 @@ public class QUTMSVehicleSimulationProfileEditor : Editor
         DrawChildFieldsWithoutRootLabel(serializedObject.FindProperty("suspension"), "Suspension Values", ref showSuspension);
 
         if (GUILayout.Button("Save As New Suspension Preset"))
+        {
+            serializedObject.ApplyModifiedProperties();
+            values.RefreshDerivedCarValues();
+            EditorUtility.SetDirty(values);
             QUTMSSuspensionPresetSaveWindow.Open(values);
+        }
     }
 
     private void DrawTrackConditionsSection(QUTMSVehicleSimulationProfile values)
@@ -1564,7 +2379,11 @@ public class QUTMSVehicleSimulationProfileEditor : Editor
         DrawChildFieldsWithoutRootLabel(serializedObject.FindProperty("trackConditions"), "Conditions", ref showTrackConditions);
 
         if (GUILayout.Button("Save As New Track Condition Preset"))
+        {
+            serializedObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(values);
             QUTMSTrackConditionPresetSaveWindow.Open(values);
+        }
     }
 
     private void DrawSensorsSection(QUTMSVehicleSimulationProfile values)
@@ -1594,7 +2413,11 @@ public class QUTMSVehicleSimulationProfileEditor : Editor
         DrawChildFieldsWithoutRootLabel(serializedObject.FindProperty("wheelSpeedNoise"), "Wheel Speed Noise", ref showWheelSpeedNoise);
 
         if (GUILayout.Button("Save As New Sensor Preset"))
+        {
+            serializedObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(values);
             QUTMSSensorPresetSaveWindow.Open(values);
+        }
     }
 
     private void DrawInterfaceRuntimeSection()
@@ -1711,7 +2534,29 @@ public class QUTMSVehicleSimulationProfileEditor : Editor
         if (asset == null)
             return "";
 
-        return AssetDatabase.GetAssetPath(asset);
+        string directPath = AssetDatabase.GetAssetPath(asset);
+
+        if (!string.IsNullOrWhiteSpace(directPath))
+            return directPath;
+
+        GameObject root = PrefabUtility.GetOutermostPrefabInstanceRoot(asset);
+
+        if (root != null)
+        {
+            GameObject sourceRoot = PrefabUtility.GetCorrespondingObjectFromSource(root);
+            string rootPath = AssetDatabase.GetAssetPath(sourceRoot);
+
+            if (!string.IsNullOrWhiteSpace(rootPath))
+                return rootPath;
+        }
+
+        Debug.LogWarning(
+            "[QUTMSVehicleSimulationProfile] Could not save asset path for '" +
+            asset.name +
+            "'. Drag the top prefab asset from the Project window."
+        );
+
+        return "";
     }
 
     private static GameObject LoadGameObjectAtPath(string path)

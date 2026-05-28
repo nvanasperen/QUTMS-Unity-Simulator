@@ -1,0 +1,27 @@
+{
+    "presetName": "Dry",
+    "groundFrictionMu": 100.0,
+    "groundFrictionMu2": 50.0,
+    "groundBounciness": 0.0,
+    "objectNoisePercent": 0.0,
+    "coneNoiseRadiusM": 0.0,
+    "colourNoisePercent": 0.0,
+    "deterministicNoise": true,
+    "randomSeed": 12345,
+    "surfaceMaterialOverride": {
+        "instanceID": 0
+    },
+    "surfaceTexture": {
+        "instanceID": 0
+    },
+    "surfaceColour": {
+        "r": 0.1599999964237213,
+        "g": 0.1599999964237213,
+        "b": 0.1599999964237213,
+        "a": 1.0
+    },
+    "surfaceTextureTiling": {
+        "x": 40.0,
+        "y": 40.0
+    }
+}
